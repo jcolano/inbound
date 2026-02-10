@@ -1,14 +1,16 @@
-# Inbound PRD Documentation
+# FormAgent PRD Documentation
 
 ## Overview
-Inbound is an inbound execution system — forms as the surface, AI agents as labor. Describe a form in plain text, get a smart form with an AI agent behind it. Features include NL form generation, 6 processing flows, 4 routing strategies, A/B experimentation, agent autonomy levels, and full analytics.
+FormAgent is an inbound execution system -- forms as the surface, AI agents as labor. Describe a form in plain text, get a smart form with an AI agent behind it. Features include NL form generation, 6 processing flows, 4 routing strategies, A/B experimentation, agent autonomy levels, and full analytics.
 
 ## Product Summary
 - **One-liner:** Describe a form. Get a form and the AI that runs it.
-- **Tech Stack:** Python 3.11+ / FastAPI, SQLite (aiosqlite), Claude API, Vanilla JS, WebSocket, SMTP
-- **Database:** 20 tables (15 core + 5 auth/multi-tenancy)
+- **Tech Stack:** Python 3.11+ / FastAPI, JSON file storage (`data/` directory), Claude API, Vanilla JS, WebSocket, SMTP
+- **Storage:** 21 JSON files in `data/` -- one per entity type, no database
 - **API:** ~91 endpoints (75 core + 16 auth)
 - **Modules:** 5 (Module 0: Auth, Module 1: Build, Module 2: Capture+Process, Module 3: Experiments, Module 4: Observe)
+
+> **Addendum:** The MVP uses JSON files instead of any database. See [ADR-015](adr/ADR-015-json-file-storage.md) for rationale. This supersedes the original SQLite decision ([ADR-002](adr/ADR-002-sqlite-database.md)).
 
 ## Documentation Structure
 
@@ -35,7 +37,7 @@ Domain modeling using DDD patterns.
 Key architectural decisions with rationale and trade-offs.
 - [ADR Index](adr/index.md) - Full index of all decisions
 - ADR-001: Modular Monolith Architecture
-- ADR-002: SQLite Database
+- ~~ADR-002: SQLite Database~~ (Superseded by ADR-015)
 - ADR-003: FastAPI Backend
 - ADR-004: JWT Authentication
 - ADR-005: Workspace Isolation (Multi-Tenancy)
@@ -48,6 +50,7 @@ Key architectural decisions with rationale and trade-offs.
 - ADR-012: Prefixed ID Generation
 - ADR-013: Embed Architecture
 - ADR-014: WebSocket Observability
+- **ADR-015: JSON File Storage** (Addendum -- replaces SQLite for MVP)
 
 ### SPARC Implementation Docs (`sparc/`)
 Implementation-ready documentation following SPARC methodology.
@@ -62,16 +65,47 @@ Implementation-ready documentation following SPARC methodology.
 1. Start with the [Glossary](specification/glossary.md) to understand terminology
 2. Read [Functional Requirements](specification/requirements.md) for the full scope
 3. Review the [Domain Model](ddd/domain-model.md) for system structure
-4. Check [ADR Index](adr/index.md) for key technical decisions
+4. Check [ADR Index](adr/index.md) for key technical decisions -- especially [ADR-015](adr/ADR-015-json-file-storage.md) on storage
 5. Follow [Completion Guide](sparc/05-completion.md) for build order
 
 ## Implementation Order (Critical)
 
-Module 0 (Auth + Multi-Tenancy) MUST be built first. Every table has `workspace_id`, every query filters by it, every endpoint validates it.
+Module 0 (Auth + Multi-Tenancy) MUST be built first. Every JSON record has `workspace_id`, every query filters by it, every endpoint validates it.
 
 ```
-Module 0: Auth → Module 1: Build → Module 2: Capture → Module 3: Experiments → Module 4: Observe
+Module 0: Auth --> Module 1: Build --> Module 2: Capture --> Module 3: Experiments --> Module 4: Observe
 ```
+
+## Storage (MVP)
+
+No database. All data stored as JSON files in `data/`:
+
+```
+data/
+├── accounts.json
+├── workspaces.json
+├── workspace_memberships.json
+├── api_keys.json
+├── sessions.json
+├── forms.json
+├── submissions.json
+├── contacts.json
+├── contact_notes.json
+├── companies.json
+├── deals.json
+├── handler_groups.json
+├── campaigns.json
+├── sequences.json
+├── sequence_steps.json
+├── enrollments.json
+├── experiments.json
+├── drafts.json
+├── spam_log.json
+├── events.json
+└── errors.json
+```
+
+See [ADR-015](adr/ADR-015-json-file-storage.md) for the full `JsonStore` interface and atomic write strategy.
 
 ## Source Documents
 - Product Definition: `../Inbound-Product-Definition.md`
@@ -79,4 +113,4 @@ Module 0: Auth → Module 1: Build → Module 2: Capture → Module 3: Experimen
 - Generator Workflow: `../prd-to-docs.md`
 
 ---
-*Generated from Inbound Product Definition v2.0 using prd-to-docs workflow*
+*Generated from FormAgent Product Definition v2.0 using prd-to-docs workflow*

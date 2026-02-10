@@ -4,8 +4,8 @@ This directory contains the Architecture Decision Records (ADRs) for FormAgent, 
 
 **Product:** FormAgent v2.0 (Locked Scope)
 **Date:** 2026-02-10
-**Tech Stack:** Python 3.11+ / FastAPI, SQLite / aiosqlite, Claude API (Anthropic SDK), Vanilla JS, SMTP, WebSocket, daemon threads
-**Scale:** 20 database tables, ~91 API endpoints, multi-tenant with workspace isolation
+**Tech Stack:** Python 3.11+ / FastAPI, JSON file storage (`data/` directory), Claude API (Anthropic SDK), Vanilla JS, SMTP, WebSocket, daemon threads
+**Scale:** 20 entity types (JSON files), ~91 API endpoints, multi-tenant with workspace isolation
 
 ---
 
@@ -14,7 +14,8 @@ This directory contains the Architecture Decision Records (ADRs) for FormAgent, 
 | ADR | Title | Status | Summary |
 |-----|-------|--------|---------|
 | [ADR-001](./ADR-001-modular-monolith.md) | Modular Monolith Architecture | Accepted | Single FastAPI app with clear module boundaries; no microservices. Optimized for hackathon speed, SQLite compatibility, and single-process deployment. |
-| [ADR-002](./ADR-002-sqlite-database.md) | SQLite as Primary Database | Accepted | Single-file database via aiosqlite with zero infrastructure; trades concurrent write capacity and horizontal scaling for deployment simplicity. |
+| [ADR-002](./ADR-002-sqlite-database.md) | ~~SQLite as Primary Database~~ | Superseded | ~~Single-file database via aiosqlite.~~ Superseded by ADR-015. |
+| [ADR-015](./ADR-015-json-file-storage.md) | JSON File Storage | Accepted | Each entity type stored as a JSON file in `data/` directory. Zero database dependencies. `JsonStore` class provides load/save/find/insert/update/delete. Atomic writes via temp file + rename. |
 | [ADR-003](./ADR-003-fastapi-backend.md) | Python 3.11+ / FastAPI Backend | Accepted | Async-native framework with Pydantic validation, native WebSocket support, and dependency injection for auth context. |
 | [ADR-004](./ADR-004-jwt-authentication.md) | JWT Authentication with Session Records | Accepted | HS256 JWT tokens (24h expiry) for dashboard sessions with server-side session table for revocation; API keys for programmatic access. |
 | [ADR-005](./ADR-005-workspace-isolation.md) | Multi-Tenant Workspace Isolation | Accepted | Row-level tenancy via workspace_id column on every data table; middleware enforces isolation on every query; workspace-scoped unique constraints. |
@@ -38,10 +39,13 @@ ADR-001 (Modular Monolith)
   ├── constrains --> ADR-008 (Daemon Threads: in-process, no external workers)
   └── enables   --> ADR-014 (WebSocket: in-process broadcast, no pub/sub needed)
 
-ADR-002 (SQLite)
-  ├── requires  --> ADR-001 (single process for file-based DB access)
-  ├── requires  --> ADR-008 (threads, not separate processes, for DB access)
-  └── shapes    --> ADR-012 (TEXT primary keys for prefixed IDs)
+ADR-002 (SQLite) -- SUPERSEDED by ADR-015
+
+ADR-015 (JSON File Storage)
+  ├── supersedes --> ADR-002 (SQLite)
+  ├── requires   --> ADR-001 (single process for file-based access)
+  ├── requires   --> ADR-008 (thread locks for concurrent write safety)
+  └── shapes     --> ADR-012 (TEXT IDs as JSON object keys)
 
 ADR-003 (FastAPI)
   ├── enables   --> ADR-004 (Depends() for auth middleware)

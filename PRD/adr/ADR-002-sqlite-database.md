@@ -1,7 +1,7 @@
 # ADR-002: SQLite as Primary Database
 
 ## Status
-Accepted
+Superseded by [ADR-015: JSON File Storage](./ADR-015-json-file-storage.md)
 
 ## Context
 FormAgent requires persistent storage for 20 database tables spanning accounts, workspaces, forms, submissions, contacts, companies, deals, handler groups, campaigns, sequences, enrollments, experiments, drafts, spam logs, events, errors, sessions, API keys, and workspace memberships. The system is designed for rapid development and zero-infrastructure deployment (see [ADR-001](./ADR-001-modular-monolith.md)).
