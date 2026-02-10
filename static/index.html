@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormAgent — Intelligent Forms That Act</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link href="css/index.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- AUTH SCREEN                                         -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="bi bi-lightning-charge-fill"></i>FormAgent</div>
+            <p class="text-muted mb-4">Intelligent forms that act.</p>
+
+            <!-- Login Form -->
+            <div id="login-form">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Email</label>
+                    <input type="email" class="form-control" value="juan@example.com">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Password</label>
+                    <input type="password" class="form-control" value="••••••••">
+                </div>
+                <button class="btn btn-primary w-100 py-2 fw-semibold" onclick="showApp()" style="background:var(--fa-accent);border:none;border-radius:8px;">
+                    Sign In
+                </button>
+                <p class="text-center mt-3 mb-0 small text-muted">
+                    Don't have an account? <a href="#" onclick="toggleAuth()" class="text-decoration-none" style="color:var(--fa-accent)">Sign up</a>
+                </p>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signup-form" style="display:none">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Full Name</label>
+                    <input type="text" class="form-control" placeholder="Jane Smith">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Email</label>
+                    <input type="email" class="form-control" placeholder="jane@company.com">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Password</label>
+                    <input type="password" class="form-control" placeholder="Min 8 characters">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Workspace Name</label>
+                    <input type="text" class="form-control" placeholder="My Company">
+                </div>
+                <button class="btn btn-primary w-100 py-2 fw-semibold" onclick="showApp()" style="background:var(--fa-accent);border:none;border-radius:8px;">
+                    Create Account
+                </button>
+                <p class="text-center mt-3 mb-0 small text-muted">
+                    Already have an account? <a href="#" onclick="toggleAuth()" class="text-decoration-none" style="color:var(--fa-accent)">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- MAIN APP                                            -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <div id="app-screen" style="display:none">
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <h5><i class="bi bi-lightning-charge-fill"></i>FormAgent</h5>
+                <small>My AI Consulting</small>
+            </div>
+            <div class="sidebar-nav">
+                <div class="sidebar-section">Overview</div>
+                <a class="sidebar-link active" data-view="dashboard" onclick="switchView(this)">
+                    <i class="bi bi-grid-1x2"></i> Dashboard
+                </a>
+
+                <div class="sidebar-section">Inbound</div>
+                <a class="sidebar-link" data-view="forms" onclick="switchView(this)">
+                    <i class="bi bi-ui-checks-grid"></i> Forms
+                    <span class="badge bg-primary rounded-pill">6</span>
+                </a>
+                <a class="sidebar-link" data-view="submissions" onclick="switchView(this)">
+                    <i class="bi bi-inbox"></i> Submissions
+                    <span class="badge bg-warning text-dark rounded-pill">3</span>
+                </a>
+                <a class="sidebar-link" data-view="contacts" onclick="switchView(this)">
+                    <i class="bi bi-people"></i> Contacts
+                </a>
+                <a class="sidebar-link" data-view="campaigns" onclick="switchView(this)">
+                    <i class="bi bi-megaphone"></i> Campaigns
+                </a>
+
+                <div class="sidebar-section">Intelligence</div>
+                <a class="sidebar-link" data-view="experiments" onclick="switchView(this)">
+                    <i class="bi bi-shuffle"></i> Experiments
+                </a>
+                <a class="sidebar-link" data-view="observe" onclick="switchView(this)">
+                    <i class="bi bi-activity"></i> Agent Monitor
+                    <span class="badge bg-success rounded-pill">Live</span>
+                </a>
+
+                <div class="sidebar-section">Configure</div>
+                <a class="sidebar-link" data-view="groups" onclick="switchView(this)">
+                    <i class="bi bi-diagram-3"></i> Handler Groups
+                </a>
+                <a class="sidebar-link" data-view="settings" onclick="switchView(this)">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="dropdown">
+                    <button class="dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-2"></i> Juan
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item small" href="#"><i class="bi bi-building me-2"></i>Switch Workspace</a></li>
+                        <li><a class="dropdown-item small" href="#"><i class="bi bi-key me-2"></i>API Keys</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item small" href="#" onclick="showAuth()"><i class="bi bi-box-arrow-left me-2"></i>Sign Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- ═══════════════ DASHBOARD ═══════════════ -->
+            <div id="view-dashboard" class="view active">
+                <div class="page-header">
+                    <div>
+                        <h4>Dashboard</h4>
+                        <p class="text-muted mb-0 small">Overview of your inbound performance</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <select class="form-select form-select-sm" style="width:auto">
+                            <option>Last 7 days</option>
+                            <option selected>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                        <button class="btn btn-sm btn-primary" style="background:var(--fa-accent);border:none" onclick="switchView(document.querySelector('[data-view=forms]'))">
+                            <i class="bi bi-plus-lg me-1"></i> New Form
+                        </button>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <!-- KPI Row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="kpi-card">
+                                <div class="kpi-icon" style="background:var(--fa-accent-light);color:var(--fa-accent)"><i class="bi bi-envelope-open"></i></div>
+                                <div class="kpi-label">Submissions</div>
+                                <div class="kpi-value">1,247</div>
+                                <div class="kpi-delta up"><i class="bi bi-arrow-up"></i> 12% vs last period</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="kpi-card">
+                                <div class="kpi-icon" style="background:#dcfce7;color:var(--fa-success)"><i class="bi bi-check-circle"></i></div>
+                                <div class="kpi-label">Conversion Rate</div>
+                                <div class="kpi-value">14.2%</div>
+                                <div class="kpi-delta up"><i class="bi bi-arrow-up"></i> 3% vs last period</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="kpi-card">
+                                <div class="kpi-icon" style="background:#fef3c7;color:var(--fa-warning)"><i class="bi bi-clock"></i></div>
+                                <div class="kpi-label">Avg Response Time</div>
+                                <div class="kpi-value">8.3s</div>
+                                <div class="kpi-delta up"><i class="bi bi-arrow-down"></i> 2.1s faster</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="kpi-card">
+                                <div class="kpi-icon" style="background:#dbeafe;color:var(--fa-info)"><i class="bi bi-currency-dollar"></i></div>
+                                <div class="kpi-label">Revenue</div>
+                                <div class="kpi-value">$284K</div>
+                                <div class="kpi-delta up"><i class="bi bi-arrow-up"></i> 18% vs last period</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <!-- Funnel -->
+                        <div class="col-lg-7">
+                            <div class="fa-card">
+                                <h6 class="fw-bold mb-3">Inbound Funnel</h6>
+                                <div class="funnel-row">
+                                    <div class="funnel-label">Submissions</div>
+                                    <div class="funnel-bar-container"><div class="funnel-bar" style="width:100%"></div></div>
+                                    <div class="funnel-count">1,247</div>
+                                    <div class="funnel-pct">100%</div>
+                                </div>
+                                <div class="funnel-row">
+                                    <div class="funnel-label">Passed Spam</div>
+                                    <div class="funnel-bar-container"><div class="funnel-bar" style="width:92%"></div></div>
+                                    <div class="funnel-count">1,147</div>
+                                    <div class="funnel-pct">92%</div>
+                                </div>
+                                <div class="funnel-row">
+                                    <div class="funnel-label">Contacts Created</div>
+                                    <div class="funnel-bar-container"><div class="funnel-bar" style="width:88%"></div></div>
+                                    <div class="funnel-count">1,097</div>
+                                    <div class="funnel-pct">88%</div>
+                                </div>
+                                <div class="funnel-row">
+                                    <div class="funnel-label">Processed</div>
+                                    <div class="funnel-bar-container"><div class="funnel-bar" style="width:84%"></div></div>
+                                    <div class="funnel-count">1,048</div>
+                                    <div class="funnel-pct">84%</div>
+                                </div>
+                                <div class="funnel-row">
+                                    <div class="funnel-label">Deals Created</div>
+                                    <div class="funnel-bar-container"><div class="funnel-bar" style="width:14%"></div></div>
+                                    <div class="funnel-count">177</div>
+                                    <div class="funnel-pct">14%</div>
+                                </div>
+                                <div class="funnel-row">
+                                    <div class="funnel-label">Deals Won</div>
+                                    <div class="funnel-bar-container"><div class="funnel-bar" style="width:5%"></div></div>
+                                    <div class="funnel-count">58</div>
+                                    <div class="funnel-pct">5%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Channel Attribution -->
+                        <div class="col-lg-5">
+                            <div class="fa-card">
+                                <h6 class="fw-bold mb-3">Channel Attribution</h6>
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                        <tr><th>Source</th><th class="text-end">Leads</th><th class="text-end">Deals</th><th class="text-end">Conv%</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><i class="bi bi-google text-danger me-2"></i>Google</td><td class="text-end">520</td><td class="text-end">24</td><td class="text-end"><span class="badge bg-light text-dark">4.6%</span></td></tr>
+                                        <tr><td><i class="bi bi-linkedin text-primary me-2"></i>LinkedIn</td><td class="text-end">280</td><td class="text-end">48</td><td class="text-end"><span class="badge bg-success-subtle text-success">17.1%</span></td></tr>
+                                        <tr><td><i class="bi bi-globe me-2"></i>Direct</td><td class="text-end">310</td><td class="text-end">15</td><td class="text-end"><span class="badge bg-light text-dark">4.8%</span></td></tr>
+                                        <tr><td><i class="bi bi-share me-2"></i>Referral</td><td class="text-end">137</td><td class="text-end">28</td><td class="text-end"><span class="badge bg-success-subtle text-success">20.4%</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Speed to Lead -->
+                        <div class="col-lg-5">
+                            <div class="fa-card">
+                                <h6 class="fw-bold mb-3">Speed-to-Lead</h6>
+                                <div class="speed-row"><div class="speed-label">&lt; 1 min</div><div class="speed-bar-bg"><div class="speed-bar" style="width:68%;background:var(--fa-success)"></div></div><div class="speed-pct">68%</div></div>
+                                <div class="speed-row"><div class="speed-label">1-5 min</div><div class="speed-bar-bg"><div class="speed-bar" style="width:18%;background:#86efac"></div></div><div class="speed-pct">18%</div></div>
+                                <div class="speed-row"><div class="speed-label">5-30 min</div><div class="speed-bar-bg"><div class="speed-bar" style="width:8%;background:var(--fa-warning)"></div></div><div class="speed-pct">8%</div></div>
+                                <div class="speed-row"><div class="speed-label">30m-1h</div><div class="speed-bar-bg"><div class="speed-bar" style="width:3%;background:#fbbf24"></div></div><div class="speed-pct">3%</div></div>
+                                <div class="speed-row"><div class="speed-label">1-4h</div><div class="speed-bar-bg"><div class="speed-bar" style="width:2%;background:var(--fa-danger)"></div></div><div class="speed-pct">2%</div></div>
+                                <div class="speed-row"><div class="speed-label">&gt; 4h</div><div class="speed-bar-bg"><div class="speed-bar" style="width:1%;background:#dc2626"></div></div><div class="speed-pct">1%</div></div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="col-lg-7">
+                            <div class="fa-card fa-card-flush" style="max-height:280px;overflow-y:auto">
+                                <div class="p-3 border-bottom"><h6 class="fw-bold mb-0">Live Activity</h6></div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#dcfce7;color:var(--fa-success)"><i class="bi bi-check-lg"></i></div>
+                                    <div><strong>Agent SalesBot</strong> qualified lead <span class="mono">Jane Smith</span> as high-intent<br><small class="text-muted">Form: Enterprise Demo Request</small></div>
+                                    <div class="feed-time">12s ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#dbeafe;color:var(--fa-info)"><i class="bi bi-envelope"></i></div>
+                                    <div><strong>Agent SalesBot</strong> sent follow-up email to <span class="mono">john@acme.com</span><br><small class="text-muted">Subject: "Thanks for your interest in AI consulting"</small></div>
+                                    <div class="feed-time">45s ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:var(--fa-accent-light);color:var(--fa-accent)"><i class="bi bi-inbox"></i></div>
+                                    <div><strong>New submission</strong> on <span class="mono">Whitepaper Download</span> from <span class="mono">maria@techcorp.io</span><br><small class="text-muted">Returning contact (2nd visit)</small></div>
+                                    <div class="feed-time">1m ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#fef3c7;color:var(--fa-warning)"><i class="bi bi-shield-x"></i></div>
+                                    <div><strong>Spam blocked</strong> — rate limit exceeded for IP <span class="mono">203.0.113.42</span><br><small class="text-muted">Form: Contact Us</small></div>
+                                    <div class="feed-time">3m ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#dcfce7;color:var(--fa-success)"><i class="bi bi-cash-stack"></i></div>
+                                    <div><strong>Deal created</strong> — $50K for <span class="mono">Acme Corp</span> by Agent SalesBot<br><small class="text-muted">Auto-qualified from demo request</small></div>
+                                    <div class="feed-time">5m ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ FORMS ═══════════════ -->
+            <div id="view-forms" class="view">
+                <div class="page-header">
+                    <h4>Forms</h4>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-primary" onclick="showModal('ai-builder-modal')">
+                            <i class="bi bi-stars me-1"></i> Build with AI
+                        </button>
+                        <button class="btn btn-sm btn-primary" style="background:var(--fa-accent);border:none" onclick="showModal('form-builder-modal')">
+                            <i class="bi bi-plus-lg me-1"></i> New Form
+                        </button>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="fa-card fa-card-flush">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Form</th>
+                                    <th>Type</th>
+                                    <th>Flow</th>
+                                    <th>Handler</th>
+                                    <th>Autonomy</th>
+                                    <th class="text-end">Submissions</th>
+                                    <th class="text-end">Conv%</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-semibold">Enterprise Demo Request</td>
+                                    <td><span class="badge bg-primary-subtle text-primary">sales</span></td>
+                                    <td>sales_lead</td>
+                                    <td><i class="bi bi-robot me-1"></i>SalesBot</td>
+                                    <td><span class="badge bg-success-subtle text-success">Full Auto</span></td>
+                                    <td class="text-end fw-semibold">487</td>
+                                    <td class="text-end">18.2%</td>
+                                    <td><span class="status-dot active"></span>Active</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-link text-muted" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a class="dropdown-item small" href="#" onclick="showModal('form-builder-modal')"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                                                <li><a class="dropdown-item small" href="#" onclick="showModal('embed-modal')"><i class="bi bi-code-slash me-2"></i>Embed Code</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i class="bi bi-shuffle me-2"></i>Create Experiment</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i class="bi bi-archive me-2"></i>Archive</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold">Whitepaper Download</td>
+                                    <td><span class="badge bg-info-subtle text-info">marketing</span></td>
+                                    <td>email_marketing</td>
+                                    <td><i class="bi bi-megaphone me-1"></i>Q1 Campaign</td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary">Deterministic</span></td>
+                                    <td class="text-end fw-semibold">312</td>
+                                    <td class="text-end">—</td>
+                                    <td><span class="status-dot active"></span>Active</td>
+                                    <td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold">Support Request</td>
+                                    <td><span class="badge bg-warning-subtle text-warning">support</span></td>
+                                    <td>support_triage</td>
+                                    <td><i class="bi bi-diagram-3 me-1"></i>Support Team</td>
+                                    <td><span class="badge bg-info-subtle text-info">Semi-Auto</span></td>
+                                    <td class="text-end fw-semibold">248</td>
+                                    <td class="text-end">92.3%</td>
+                                    <td><span class="status-dot active"></span>Active</td>
+                                    <td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold">Book a Consultation</td>
+                                    <td><span class="badge bg-primary-subtle text-primary">sales</span></td>
+                                    <td>booking_request</td>
+                                    <td><i class="bi bi-calendar me-1"></i>Calendar</td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary">Deterministic</span></td>
+                                    <td class="text-end fw-semibold">124</td>
+                                    <td class="text-end">—</td>
+                                    <td><span class="status-dot active"></span>Active</td>
+                                    <td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold">General Contact</td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary">general</span></td>
+                                    <td>direct_route</td>
+                                    <td><i class="bi bi-person me-1"></i>Rachel</td>
+                                    <td><span class="badge bg-warning-subtle text-warning">Draft</span></td>
+                                    <td class="text-end fw-semibold">62</td>
+                                    <td class="text-end">—</td>
+                                    <td><span class="status-dot active"></span>Active</td>
+                                    <td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">Newsletter Signup</td>
+                                    <td><span class="badge bg-info-subtle text-info">marketing</span></td>
+                                    <td>notify_only</td>
+                                    <td><i class="bi bi-bell me-1"></i>Notify</td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary">Notify Only</span></td>
+                                    <td class="text-end fw-semibold">14</td>
+                                    <td class="text-end">—</td>
+                                    <td><span class="status-dot draft"></span>Draft</td>
+                                    <td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ SUBMISSIONS ═══════════════ -->
+            <div id="view-submissions" class="view">
+                <div class="page-header">
+                    <h4>Submissions</h4>
+                    <div class="d-flex gap-2 align-items-center">
+                        <select class="form-select form-select-sm" style="width:auto">
+                            <option>All Forms</option>
+                            <option>Enterprise Demo</option>
+                            <option>Whitepaper Download</option>
+                        </select>
+                        <select class="form-select form-select-sm" style="width:auto">
+                            <option>All Status</option>
+                            <option>Processed</option>
+                            <option>Processing</option>
+                            <option>Failed</option>
+                            <option>Spam</option>
+                        </select>
+                        <span class="badge bg-warning text-dark">3 pending drafts</span>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="fa-card fa-card-flush">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr><th>Contact</th><th>Form</th><th>Status</th><th>Handler</th><th>Outcome</th><th>Time</th><th></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr style="cursor:pointer" onclick="showModal('submission-detail-modal')">
+                                    <td>
+                                        <div class="fw-semibold">Jane Smith</div>
+                                        <div class="small text-muted">jane@acme.com</div>
+                                    </td>
+                                    <td>Enterprise Demo</td>
+                                    <td><span class="badge bg-success-subtle text-success"><span class="status-dot processed"></span>Processed</span></td>
+                                    <td><i class="bi bi-robot me-1"></i>SalesBot</td>
+                                    <td><span class="badge bg-primary-subtle text-primary">Qualified — $100K deal</span></td>
+                                    <td>
+                                        <div class="small">12s</div>
+                                        <div class="small text-muted">2 min ago</div>
+                                    </td>
+                                    <td><i class="bi bi-chevron-right text-muted"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">John Miller</div>
+                                        <div class="small text-muted">john@techstart.io</div>
+                                    </td>
+                                    <td>Enterprise Demo</td>
+                                    <td><span class="badge bg-info-subtle text-info"><span class="status-dot draft"></span>Draft Pending</span></td>
+                                    <td><i class="bi bi-robot me-1"></i>SalesBot</td>
+                                    <td><span class="badge bg-warning-subtle text-warning">Awaiting approval</span></td>
+                                    <td>
+                                        <div class="small">—</div>
+                                        <div class="small text-muted">15 min ago</div>
+                                    </td>
+                                    <td><i class="bi bi-chevron-right text-muted"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Maria Santos</div>
+                                        <div class="small text-muted">maria@techcorp.io</div>
+                                    </td>
+                                    <td>Whitepaper Download</td>
+                                    <td><span class="badge bg-success-subtle text-success"><span class="status-dot processed"></span>Processed</span></td>
+                                    <td><i class="bi bi-gear me-1"></i>Auto</td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary">Enrolled in nurture</span></td>
+                                    <td>
+                                        <div class="small">1.8s</div>
+                                        <div class="small text-muted">1 hr ago</div>
+                                    </td>
+                                    <td><i class="bi bi-chevron-right text-muted"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Alex Chen</div>
+                                        <div class="small text-muted">alex@startup.co</div>
+                                    </td>
+                                    <td>Support Request</td>
+                                    <td><span class="badge bg-danger-subtle text-danger"><span class="status-dot failed"></span>Failed</span></td>
+                                    <td><i class="bi bi-robot me-1"></i>SupportBot</td>
+                                    <td><span class="badge bg-danger-subtle text-danger">Escalated to human</span></td>
+                                    <td>
+                                        <div class="small">Timeout</div>
+                                        <div class="small text-muted">2 hr ago</div>
+                                    </td>
+                                    <td><i class="bi bi-chevron-right text-muted"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ CONTACTS ═══════════════ -->
+            <div id="view-contacts" class="view">
+                <div class="page-header"><h4>Contacts</h4></div>
+                <div class="page-body">
+                    <div class="fa-card fa-card-flush">
+                        <table class="table mb-0">
+                            <thead><tr><th>Contact</th><th>Company</th><th>Source</th><th>Tags</th><th>Submissions</th><th>Last Seen</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="fw-semibold">Jane Smith</div><div class="small text-muted">jane@acme.com</div></td>
+                                    <td>Acme Corp</td>
+                                    <td><i class="bi bi-google text-danger me-1"></i>google/cpc</td>
+                                    <td><span class="badge bg-success-subtle text-success me-1">qualified</span><span class="badge bg-primary-subtle text-primary">enterprise</span></td>
+                                    <td class="text-center">3</td>
+                                    <td class="small text-muted">2 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="fw-semibold">Maria Santos</div><div class="small text-muted">maria@techcorp.io</div></td>
+                                    <td>TechCorp</td>
+                                    <td><i class="bi bi-linkedin text-primary me-1"></i>linkedin/social</td>
+                                    <td><span class="badge bg-info-subtle text-info">whitepaper-lead</span></td>
+                                    <td class="text-center">2</td>
+                                    <td class="small text-muted">1 hr ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="fw-semibold">Alex Chen</div><div class="small text-muted">alex@startup.co</div></td>
+                                    <td>Startup Co</td>
+                                    <td><i class="bi bi-globe me-1"></i>direct</td>
+                                    <td><span class="badge bg-warning-subtle text-warning">support</span></td>
+                                    <td class="text-center">1</td>
+                                    <td class="small text-muted">2 hr ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ CAMPAIGNS ═══════════════ -->
+            <div id="view-campaigns" class="view">
+                <div class="page-header">
+                    <h4>Campaigns</h4>
+                    <button class="btn btn-sm btn-primary" style="background:var(--fa-accent);border:none"><i class="bi bi-plus-lg me-1"></i> New Campaign</button>
+                </div>
+                <div class="page-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="fa-card">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Q1 AI Whitepaper Launch</h6>
+                                        <span class="badge bg-success-subtle text-success">Active</span>
+                                        <span class="badge bg-info-subtle text-info ms-1">lead_gen</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-3"><div class="small text-muted">Submissions</div><div class="fw-bold">312</div></div>
+                                    <div class="col-3"><div class="small text-muted">Contacts</div><div class="fw-bold">289</div></div>
+                                    <div class="col-3"><div class="small text-muted">Deals</div><div class="fw-bold">18</div></div>
+                                    <div class="col-3"><div class="small text-muted">Conv%</div><div class="fw-bold text-success">6.2%</div></div>
+                                </div>
+                                <hr>
+                                <div class="small text-muted"><i class="bi bi-ui-checks me-1"></i>Whitepaper Download form &nbsp;·&nbsp; <i class="bi bi-clock me-1"></i>3-step nurture sequence</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fa-card">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Enterprise Outreach</h6>
+                                        <span class="badge bg-success-subtle text-success">Active</span>
+                                        <span class="badge bg-primary-subtle text-primary ms-1">product_launch</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-3"><div class="small text-muted">Submissions</div><div class="fw-bold">487</div></div>
+                                    <div class="col-3"><div class="small text-muted">Contacts</div><div class="fw-bold">442</div></div>
+                                    <div class="col-3"><div class="small text-muted">Deals</div><div class="fw-bold">58</div></div>
+                                    <div class="col-3"><div class="small text-muted">Conv%</div><div class="fw-bold text-success">13.1%</div></div>
+                                </div>
+                                <hr>
+                                <div class="small text-muted"><i class="bi bi-ui-checks me-1"></i>Enterprise Demo form &nbsp;·&nbsp; <i class="bi bi-robot me-1"></i>SalesBot handler</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ EXPERIMENTS ═══════════════ -->
+            <div id="view-experiments" class="view">
+                <div class="page-header">
+                    <h4>A/B Experiments</h4>
+                    <button class="btn btn-sm btn-primary" style="background:var(--fa-accent);border:none"><i class="bi bi-plus-lg me-1"></i> New Experiment</button>
+                </div>
+                <div class="page-body">
+                    <div class="fa-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="fw-bold mb-1">Shorter Form Test — Enterprise Demo</h6>
+                                <span class="badge bg-success-subtle text-success me-1">Active</span>
+                                <span class="small text-muted">Metric: conversion_rate · Min sample: 30</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary" onclick="alert('🚀 Optimization running...\n\nvar_a wins (18.2% vs 12.1%).\nPromoting var_a as new control.\nGenerating new challenger variant...')">
+                                <i class="bi bi-lightning me-1"></i> Run Optimization
+                            </button>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="variant-card">
+                                    <div class="text-muted small mb-2">CONTROL</div>
+                                    <h5 class="fw-bold">Original (6 fields)</h5>
+                                    <div class="row mt-3">
+                                        <div class="col-4"><div class="small text-muted">Submissions</div><div class="fw-bold fs-4">156</div></div>
+                                        <div class="col-4"><div class="small text-muted">Contacts</div><div class="fw-bold fs-4">142</div></div>
+                                        <div class="col-4"><div class="small text-muted">Conv%</div><div class="fw-bold fs-4">12.1%</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="variant-card winner">
+                                    <span class="variant-badge badge bg-success"><i class="bi bi-trophy me-1"></i>WINNING</span>
+                                    <div class="text-muted small mb-2">VARIANT A</div>
+                                    <h5 class="fw-bold">Shorter form (3 fields)</h5>
+                                    <div class="row mt-3">
+                                        <div class="col-4"><div class="small text-muted">Submissions</div><div class="fw-bold fs-4">148</div></div>
+                                        <div class="col-4"><div class="small text-muted">Contacts</div><div class="fw-bold fs-4">140</div></div>
+                                        <div class="col-4"><div class="small text-muted">Conv%</div><div class="fw-bold fs-4 text-success">18.2%</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold mb-2"><i class="bi bi-clock-history me-2"></i>Optimization Log</h6>
+                        <div class="small">
+                            <div class="timeline-item success">
+                                <div class="timeline-time">Feb 10</div>
+                                <div class="timeline-content"><strong>Experiment created</strong> — 2 variants, 50/50 split</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time">Feb 12</div>
+                                <div class="timeline-content"><strong>Waiting</strong> — var_a: 18/30, ctrl: 22/30. Need more data.</div>
+                            </div>
+                            <div class="timeline-item success">
+                                <div class="timeline-time">Feb 15</div>
+                                <div class="timeline-content"><strong>Optimization run</strong> — var_a winning (18.2% vs 12.1%). Both above min sample.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ AGENT MONITOR ═══════════════ -->
+            <div id="view-observe" class="view">
+                <div class="page-header">
+                    <h4>Agent Monitor</h4>
+                    <span class="badge bg-success py-2 px-3"><i class="bi bi-broadcast me-1"></i> Live</span>
+                </div>
+                <div class="page-body">
+                    <!-- Agent Status Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="agent-card working">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="fw-bold"><i class="bi bi-robot me-2"></i>SalesBot</div>
+                                    <span class="badge bg-warning text-dark"><span class="status-dot processing"></span>Processing</span>
+                                </div>
+                                <div class="small text-muted mb-1">Working on: <span class="mono">sub_a8f3</span></div>
+                                <div class="small text-muted">Heartbeat: 2s ago · Avg: 8.3s · Success: 96.2%</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="agent-card idle">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="fw-bold"><i class="bi bi-robot me-2"></i>SupportBot</div>
+                                    <span class="badge bg-secondary"><span class="status-dot idle"></span>Idle</span>
+                                </div>
+                                <div class="small text-muted mb-1">Last active: 8 min ago</div>
+                                <div class="small text-muted">Heartbeat: 8m ago · Avg: 14.1s · Success: 89.5%</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="agent-card idle">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="fw-bold"><i class="bi bi-robot me-2"></i>QualifierBot</div>
+                                    <span class="badge bg-secondary"><span class="status-dot idle"></span>Idle</span>
+                                </div>
+                                <div class="small text-muted mb-1">Last active: 22 min ago</div>
+                                <div class="small text-muted">Heartbeat: 22m ago · Avg: 5.7s · Success: 98.1%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Live Activity Stream -->
+                        <div class="col-lg-7">
+                            <div class="fa-card fa-card-flush" style="max-height:500px;overflow-y:auto">
+                                <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold mb-0">Activity Stream</h6>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select form-select-sm" style="width:auto;font-size:12px">
+                                            <option>All Events</option>
+                                            <option>Agent Actions</option>
+                                            <option>Errors</option>
+                                            <option>Escalations</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#fef3c7;color:var(--fa-warning)"><i class="bi bi-gear-wide-connected"></i></div>
+                                    <div><strong>SalesBot</strong> processing submission from <span class="mono">jane@acme.com</span><br><small class="text-muted">Reading context · Enterprise Demo Request</small></div>
+                                    <div class="feed-time">now</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:var(--fa-accent-light);color:var(--fa-accent)"><i class="bi bi-inbox"></i></div>
+                                    <div><strong>submission_received</strong> — <span class="mono">sub_a8f3</span> on Enterprise Demo<br><small class="text-muted">Contact matched: jane@acme.com (returning)</small></div>
+                                    <div class="feed-time">3s ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#dcfce7;color:var(--fa-success)"><i class="bi bi-check-circle"></i></div>
+                                    <div><strong>SalesBot</strong> completed <span class="mono">sub_b2e1</span><br><small class="text-muted">Actions: qualify_lead → send_email → create_deal ($50K)</small></div>
+                                    <div class="feed-time">45s ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#fee2e2;color:var(--fa-danger)"><i class="bi bi-exclamation-triangle"></i></div>
+                                    <div><strong>SupportBot error</strong> on <span class="mono">sub_c4d2</span> — LLM timeout<br><small class="text-muted">Retry attempt 2/3 · Backoff: 4s</small></div>
+                                    <div class="feed-time">8m ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#fee2e2;color:var(--fa-danger)"><i class="bi bi-arrow-up-right-circle"></i></div>
+                                    <div><strong>Escalated</strong> <span class="mono">sub_c4d2</span> to human (Rachel)<br><small class="text-muted">All retries exhausted after 3 attempts</small></div>
+                                    <div class="feed-time">8m ago</div>
+                                </div>
+                                <div class="feed-item">
+                                    <div class="feed-icon" style="background:#dbeafe;color:var(--fa-info)"><i class="bi bi-envelope-check"></i></div>
+                                    <div><strong>SalesBot</strong> sent email to <span class="mono">john@techstart.io</span><br><small class="text-muted">Subject: "Thanks for your interest in AI consulting"</small></div>
+                                    <div class="feed-time">15m ago</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Per-Submission Timeline -->
+                        <div class="col-lg-5">
+                            <div class="fa-card">
+                                <h6 class="fw-bold mb-3">Submission Timeline <span class="mono small text-muted">sub_b2e1</span></h6>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:00</div>
+                                    <div class="timeline-content"><strong>received</strong> — Submission stored</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:00</div>
+                                    <div class="timeline-content"><strong>spam_passed</strong> — All checks clear</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:01</div>
+                                    <div class="timeline-content"><strong>contact_created</strong> — contact_f3a1</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:01</div>
+                                    <div class="timeline-content"><strong>company_created</strong> — Acme Corp</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-time">14:00:02</div>
+                                    <div class="timeline-content"><strong>handler_assigned</strong> — SalesBot via round_robin</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-time">14:00:02</div>
+                                    <div class="timeline-content"><strong>agent_processing</strong> — Reading context...</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:08</div>
+                                    <div class="timeline-content"><strong>action: qualify_lead</strong> — Score: high-intent</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:10</div>
+                                    <div class="timeline-content"><strong>action: send_email</strong> — Personalized response sent</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:11</div>
+                                    <div class="timeline-content"><strong>action: create_deal</strong> — $50K deal created</div>
+                                </div>
+                                <div class="timeline-item success">
+                                    <div class="timeline-time">14:00:12</div>
+                                    <div class="timeline-content"><strong>completed</strong> — Total: 12s</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ HANDLER GROUPS ═══════════════ -->
+            <div id="view-groups" class="view">
+                <div class="page-header">
+                    <h4>Handler Groups</h4>
+                    <button class="btn btn-sm btn-primary" style="background:var(--fa-accent);border:none"><i class="bi bi-plus-lg me-1"></i> New Group</button>
+                </div>
+                <div class="page-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="fa-card">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6 class="fw-bold mb-0">Sales Team</h6>
+                                    <span class="badge bg-primary-subtle text-primary">round_robin</span>
+                                </div>
+                                <table class="table table-sm mb-0">
+                                    <thead><tr><th>Handler</th><th>Type</th><th>Role</th><th class="text-end">Assigned</th><th>Status</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><i class="bi bi-robot me-1"></i>SalesBot</td><td>Agent</td><td>member</td><td class="text-end">142</td><td><span class="status-dot active"></span>Active</td></tr>
+                                        <tr><td><i class="bi bi-person me-1"></i>Rachel</td><td>Human</td><td>principal</td><td class="text-end">98</td><td><span class="status-dot active"></span>Active</td></tr>
+                                        <tr><td><i class="bi bi-robot me-1"></i>QualifierBot</td><td>Agent</td><td>member</td><td class="text-end">135</td><td><span class="status-dot active"></span>Active</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="mt-2 small text-muted">Fallback: Rachel · Last index: 2 · Auto-assign tasks: Yes</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fa-card">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6 class="fw-bold mb-0">Support Team</h6>
+                                    <span class="badge bg-warning-subtle text-warning">least_loaded</span>
+                                </div>
+                                <table class="table table-sm mb-0">
+                                    <thead><tr><th>Handler</th><th>Type</th><th>Role</th><th class="text-end">Assigned</th><th>Status</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><i class="bi bi-robot me-1"></i>SupportBot</td><td>Agent</td><td>member</td><td class="text-end">87</td><td><span class="status-dot active"></span>Active</td></tr>
+                                        <tr><td><i class="bi bi-person me-1"></i>David</td><td>Human</td><td>principal</td><td class="text-end">45</td><td><span class="status-dot active"></span>Active</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="mt-2 small text-muted">Fallback: David · Notify on assign: Yes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ SETTINGS ═══════════════ -->
+            <div id="view-settings" class="view">
+                <div class="page-header"><h4>Settings</h4></div>
+                <div class="page-body">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="fa-card mb-4">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-building me-2"></i>Workspace</h6>
+                                <div class="mb-3"><label class="form-label small fw-semibold">Name</label><input class="form-control" value="My AI Consulting"></div>
+                                <div class="mb-3"><label class="form-label small fw-semibold">Slug</label><input class="form-control" value="my-ai-consulting" disabled></div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Timezone</label>
+                                    <select class="form-select"><option>America/New_York</option><option>America/Chicago</option><option>America/Los_Angeles</option><option>UTC</option></select>
+                                </div>
+                                <button class="btn btn-sm btn-primary" style="background:var(--fa-accent);border:none">Save Changes</button>
+                            </div>
+                            <div class="fa-card">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-people me-2"></i>Team Members</h6>
+                                <table class="table table-sm mb-3">
+                                    <thead><tr><th>Member</th><th>Role</th><th>Joined</th><th></th></tr></thead>
+                                    <tbody>
+                                        <tr><td><div class="fw-semibold">Juan <span class="badge bg-primary-subtle text-primary ms-1">you</span></div><div class="small text-muted">juan@example.com</div></td><td>Owner</td><td class="small text-muted">Jan 15</td><td></td></tr>
+                                        <tr><td><div class="fw-semibold">Rachel Torres</div><div class="small text-muted">rachel@myaiconsulting.com</div></td><td>Admin</td><td class="small text-muted">Jan 20</td><td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td></tr>
+                                        <tr><td><div class="fw-semibold">David Park</div><div class="small text-muted">david@myaiconsulting.com</div></td><td>Member</td><td class="small text-muted">Feb 1</td><td><button class="btn btn-sm btn-link text-muted"><i class="bi bi-three-dots"></i></button></td></tr>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-person-plus me-1"></i>Invite Member</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="fa-card">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-key me-2"></i>API Keys</h6>
+                                <table class="table table-sm mb-3">
+                                    <thead><tr><th>Name</th><th>Key</th><th>Last Used</th><th></th></tr></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-semibold">Production</td>
+                                            <td><code class="mono">fa_live_abc1••••••••</code></td>
+                                            <td class="small text-muted">2 min ago</td>
+                                            <td><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">Development</td>
+                                            <td><code class="mono">fa_test_xyz9••••••••</code></td>
+                                            <td class="small text-muted">3 days ago</td>
+                                            <td><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-lg me-1"></i>Create API Key</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /main-content -->
+    </div><!-- /app-screen -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- MODALS                                              -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- AI Builder Modal -->
+    <div class="modal fade" id="ai-builder-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border:none;border-radius:16px">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-stars text-primary me-2"></i>Build with AI</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Describe the form you need. FormAgent will generate the fields, flow, handler config, and agent instructions.</p>
+                    <div class="ai-input-wrapper mb-3">
+                        <textarea class="form-control" rows="3" placeholder="e.g. Build a demo request form for an AI consulting firm targeting enterprise clients with 50+ employees">Build a lead capture form for a Camino de Santiago tour company targeting group bookings</textarea>
+                        <button class="btn btn-primary btn-generate" style="background:var(--fa-accent);border:none" onclick="simulateAIGenerate()">
+                            <i class="bi bi-lightning-charge me-1"></i> Generate
+                        </button>
+                    </div>
+
+                    <div id="ai-result" style="display:none">
+                        <div class="alert alert-success d-flex align-items-center py-2">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <small>Form generated! Review and adjust below, then click Create.</small>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Form Name</label>
+                                <input class="form-control form-control-sm" value="Camino Group Tour Inquiry">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small fw-semibold">Type</label>
+                                <select class="form-select form-select-sm"><option selected>sales</option><option>marketing</option><option>support</option><option>general</option></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small fw-semibold">Flow</label>
+                                <select class="form-select form-select-sm"><option selected>sales_lead</option><option>email_marketing</option><option>support_triage</option><option>booking_request</option><option>direct_route</option><option>notify_only</option></select>
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold mt-4 mb-2">Generated Fields</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead><tr><th style="width:30px"></th><th>Label</th><th>Type</th><th>Required</th><th></th></tr></thead>
+                                <tbody>
+                                    <tr><td><i class="bi bi-grip-vertical text-muted"></i></td><td>Full Name</td><td><span class="badge bg-light text-dark">text</span></td><td><i class="bi bi-check text-success"></i></td><td><button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-pencil"></i></button></td></tr>
+                                    <tr><td><i class="bi bi-grip-vertical text-muted"></i></td><td>Email</td><td><span class="badge bg-light text-dark">email</span></td><td><i class="bi bi-check text-success"></i></td><td><button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-pencil"></i></button></td></tr>
+                                    <tr><td><i class="bi bi-grip-vertical text-muted"></i></td><td>Group Size</td><td><span class="badge bg-light text-dark">select</span></td><td><i class="bi bi-check text-success"></i></td><td><button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-pencil"></i></button></td></tr>
+                                    <tr><td><i class="bi bi-grip-vertical text-muted"></i></td><td>Preferred Dates</td><td><span class="badge bg-light text-dark">text</span></td><td><i class="bi bi-x text-muted"></i></td><td><button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-pencil"></i></button></td></tr>
+                                    <tr><td><i class="bi bi-grip-vertical text-muted"></i></td><td>Walking Experience</td><td><span class="badge bg-light text-dark">select</span></td><td><i class="bi bi-x text-muted"></i></td><td><button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-pencil"></i></button></td></tr>
+                                    <tr><td><i class="bi bi-grip-vertical text-muted"></i></td><td>Special Requirements</td><td><span class="badge bg-light text-dark">textarea</span></td><td><i class="bi bi-x text-muted"></i></td><td><button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-pencil"></i></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h6 class="fw-bold mt-3 mb-2">Handler Config</h6>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Autonomy Level</label>
+                            <div class="autonomy-track">
+                                <div class="autonomy-option" onclick="selectAutonomy(this)"><i class="bi bi-bell"></i>Notify</div>
+                                <div class="autonomy-option" onclick="selectAutonomy(this)"><i class="bi bi-pencil-square"></i>Draft</div>
+                                <div class="autonomy-option selected" onclick="selectAutonomy(this)"><i class="bi bi-speedometer2"></i>Semi-Auto</div>
+                                <div class="autonomy-option" onclick="selectAutonomy(this)"><i class="bi bi-lightning-charge"></i>Full Auto</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Allowed Actions</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <label class="form-check-label border rounded-pill px-3 py-1 small" style="cursor:pointer"><input class="form-check-input me-1" type="checkbox" checked> qualify_lead</label>
+                                <label class="form-check-label border rounded-pill px-3 py-1 small" style="cursor:pointer"><input class="form-check-input me-1" type="checkbox" checked> send_email</label>
+                                <label class="form-check-label border rounded-pill px-3 py-1 small" style="cursor:pointer"><input class="form-check-input me-1" type="checkbox" checked> create_deal</label>
+                                <label class="form-check-label border rounded-pill px-3 py-1 small" style="cursor:pointer"><input class="form-check-input me-1" type="checkbox"> book_meeting</label>
+                                <label class="form-check-label border rounded-pill px-3 py-1 small" style="cursor:pointer"><input class="form-check-input me-1" type="checkbox" checked> escalate</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Agent Context <span class="text-muted">(auto-generated)</span></label>
+                            <textarea class="form-control form-control-sm" rows="2">You handle inquiries for a Camino de Santiago tour company. Qualify leads based on group size (prioritize 6+). Check walking experience to recommend appropriate route difficulty.</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" style="background:var(--fa-accent);border:none" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg me-1"></i> Create Form
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Builder Modal -->
+    <div class="modal fade" id="form-builder-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border:none;border-radius:16px">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-ui-checks-grid me-2"></i>Form Builder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-5"><label class="form-label small fw-semibold">Form Name</label><input class="form-control form-control-sm" value="Enterprise Demo Request"></div>
+                        <div class="col-md-3"><label class="form-label small fw-semibold">Type</label><select class="form-select form-select-sm"><option selected>sales</option></select></div>
+                        <div class="col-md-4"><label class="form-label small fw-semibold">Flow</label><select class="form-select form-select-sm"><option selected>sales_lead</option></select></div>
+                    </div>
+
+                    <h6 class="fw-bold mb-2">Fields <button class="btn btn-sm btn-link text-primary p-0 ms-2"><i class="bi bi-plus-circle me-1"></i>Add Field</button></h6>
+                    <div class="list-group mb-3">
+                        <div class="list-group-item d-flex align-items-center py-2"><i class="bi bi-grip-vertical text-muted me-3"></i><span class="me-auto">Full Name</span><span class="badge bg-light text-dark me-2">text</span><span class="badge bg-success-subtle text-success">required</span></div>
+                        <div class="list-group-item d-flex align-items-center py-2"><i class="bi bi-grip-vertical text-muted me-3"></i><span class="me-auto">Email</span><span class="badge bg-light text-dark me-2">email</span><span class="badge bg-success-subtle text-success">required</span></div>
+                        <div class="list-group-item d-flex align-items-center py-2"><i class="bi bi-grip-vertical text-muted me-3"></i><span class="me-auto">Company</span><span class="badge bg-light text-dark me-2">text</span><span class="badge bg-success-subtle text-success">required</span></div>
+                        <div class="list-group-item d-flex align-items-center py-2"><i class="bi bi-grip-vertical text-muted me-3"></i><span class="me-auto">Team Size</span><span class="badge bg-light text-dark me-2">select</span><span class="badge bg-secondary-subtle text-secondary">optional</span></div>
+                        <div class="list-group-item d-flex align-items-center py-2"><i class="bi bi-grip-vertical text-muted me-3"></i><span class="me-auto">Budget Range</span><span class="badge bg-light text-dark me-2">select</span><span class="badge bg-secondary-subtle text-secondary">optional</span></div>
+                        <div class="list-group-item d-flex align-items-center py-2"><i class="bi bi-grip-vertical text-muted me-3"></i><span class="me-auto">Message</span><span class="badge bg-light text-dark me-2">textarea</span><span class="badge bg-secondary-subtle text-secondary">optional</span></div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-2">Handler</h6>
+                            <select class="form-select form-select-sm mb-2"><option selected>Sales Team (round_robin)</option><option>Support Team</option><option>Rachel (direct)</option></select>
+                            <div class="autonomy-track">
+                                <div class="autonomy-option"><i class="bi bi-bell"></i>Notify</div>
+                                <div class="autonomy-option"><i class="bi bi-pencil-square"></i>Draft</div>
+                                <div class="autonomy-option"><i class="bi bi-speedometer2"></i>Semi</div>
+                                <div class="autonomy-option selected"><i class="bi bi-lightning-charge"></i>Full</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-2">Response</h6>
+                            <textarea class="form-control form-control-sm" rows="3">Thanks! Our team will reach out within 24 hours.</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="showModal('embed-modal')" data-bs-dismiss="modal"><i class="bi bi-code-slash me-1"></i>Get Embed Code</button>
+                    <button class="btn btn-primary btn-sm" style="background:var(--fa-accent);border:none" data-bs-dismiss="modal">Save Form</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Embed Code Modal -->
+    <div class="modal fade" id="embed-modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border:none;border-radius:16px">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-code-slash me-2"></i>Embed Code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-muted mb-3">Copy and paste this snippet into your website. The form will appear immediately.</p>
+                    <div class="embed-code">
+                        <pre class="mb-0" style="color:#a5f3fc;font-size:12px">&lt;!-- FormAgent Embed --&gt;
+&lt;div id="fa-form-form_a8b3c1"&gt;&lt;/div&gt;
+&lt;script
+  src="https://app.formagent.ai/embed.js"
+  data-form-id="form_a8b3c1"&gt;
+&lt;/script&gt;</pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm w-100" style="background:var(--fa-accent);border:none" onclick="navigator.clipboard.writeText('copied');this.innerHTML='<i class=\'bi bi-check me-1\'></i>Copied!'">
+                        <i class="bi bi-clipboard me-1"></i> Copy to Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission Detail Modal -->
+    <div class="modal fade" id="submission-detail-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border:none;border-radius:16px">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><span class="mono text-muted me-2">sub_a8f3</span> Jane Smith</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-2">Submission Data</h6>
+                            <table class="table table-sm">
+                                <tr><td class="text-muted" style="width:120px">Name</td><td class="fw-semibold">Jane Smith</td></tr>
+                                <tr><td class="text-muted">Email</td><td>jane@acme.com</td></tr>
+                                <tr><td class="text-muted">Company</td><td>Acme Corp</td></tr>
+                                <tr><td class="text-muted">Team Size</td><td>51-200</td></tr>
+                                <tr><td class="text-muted">Budget</td><td>$100K+</td></tr>
+                                <tr><td class="text-muted">Message</td><td>Interested in AI strategy consulting for our engineering team.</td></tr>
+                            </table>
+                            <h6 class="fw-bold mt-3 mb-2">Attribution</h6>
+                            <table class="table table-sm">
+                                <tr><td class="text-muted">Source</td><td><i class="bi bi-linkedin text-primary me-1"></i>linkedin / social</td></tr>
+                                <tr><td class="text-muted">Campaign</td><td>q1-enterprise</td></tr>
+                                <tr><td class="text-muted">Page</td><td class="mono small">example.com/pricing</td></tr>
+                            </table>
+                            <h6 class="fw-bold mt-3 mb-2">Agent Notes</h6>
+                            <div class="small p-2 rounded" style="background:#f8fafc">
+                                High-intent enterprise lead. Fortune 500 company (51-200 employees). Created $100K deal. Sent personalized follow-up email. Recommend scheduling discovery call.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-2">Processing Timeline</h6>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:00</div><div class="timeline-content"><strong>received</strong></div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:00</div><div class="timeline-content"><strong>spam_passed</strong></div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:01</div><div class="timeline-content"><strong>contact_matched</strong> — returning (3rd visit)</div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:01</div><div class="timeline-content"><strong>company_matched</strong> — Acme Corp</div></div>
+                            <div class="timeline-item"><div class="timeline-time">14:00:02</div><div class="timeline-content"><strong>handler_assigned</strong> — SalesBot</div></div>
+                            <div class="timeline-item"><div class="timeline-time">14:00:02</div><div class="timeline-content"><strong>agent_processing</strong></div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:08</div><div class="timeline-content"><strong>qualify_lead</strong> — high-intent</div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:10</div><div class="timeline-content"><strong>send_email</strong> — response sent</div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:11</div><div class="timeline-content"><strong>create_deal</strong> — $100K</div></div>
+                            <div class="timeline-item success"><div class="timeline-time">14:00:12</div><div class="timeline-content"><strong>completed</strong> — 12s total</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="js/index.js"></script>
+
+</body>
+</html>
